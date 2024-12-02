@@ -2,18 +2,26 @@
 //Assignment 4
 //Assignment 4
 
+//variables for player 1 character and player 2 character
 Character P1;
 Character P2;
 
+//boolean variables for whether a movement key is pressed
+//P1
 boolean wPressed = false;
 boolean aPressed = false;
 boolean sPressed = false;
 boolean dPressed = false;
 
+//P2
 boolean upPressed = false;
 boolean leftPressed = false;
 boolean downPressed = false;
 boolean rightPressed = false;
+
+//boolean variables for whether slow down is pressed
+boolean bPressed = false; //P1
+boolean periodPressed = false; //P2
 
 void setup() {
   size(1280, 1024);
@@ -32,22 +40,22 @@ void draw() {
 
 //function that will set booleans for whether specific keys are pressed to true
 void keyPressed() {
-  
+
   //P1 moving upwards
   if (key == 'W' || key == 'w') {
     wPressed = true;
   }
-  
+
   //P2 moving upwards
   if (keyCode == UP) {
     upPressed = true;
   }
-  
+
   //P1 moving left
   if (key == 'A' || key == 'a') {
     aPressed = true;
   }
-  
+
   //P2 moving left
   if (keyCode == LEFT) {
     leftPressed = true;
@@ -71,6 +79,16 @@ void keyPressed() {
   //P2 moving right
   if (keyCode == RIGHT) {
     rightPressed = true;
+  }
+
+  //P1 slowing down
+  if (key == 'B' || key == 'b') {
+    bPressed = true;
+  }
+
+  //P2 slowing down
+  if (key == '.') {
+    periodPressed = true;
   }
 }
 
@@ -107,5 +125,15 @@ void keyReleased() {
 
   if (keyCode == RIGHT) {
     rightPressed = false;
+  }
+
+  //P1 slowing down
+  if (key == 'B' || key == 'b') {
+    bPressed = false;
+  }
+
+  //P2 slowing down
+  if (key == '.') {
+    periodPressed = false;
   }
 }
