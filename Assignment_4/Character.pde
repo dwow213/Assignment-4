@@ -75,7 +75,7 @@ class Character {
     image(straightSprite[frame], 0, 0);
 
     popMatrix(); //end of matrix
-    
+
     //draw the hitbox on character
     //if character is slowing down
     if (speedMult < 1) {
@@ -92,32 +92,66 @@ class Character {
 
   //function that handles the movement of the character
   void move() {
-    //when a key is pressed
 
     //moving left
     if ((aPressed && playerNum == 1) || (leftPressed && playerNum == 2)) {
-      position.x -= velocity.x * speedMult;
+      //if player hasn't gone offscreen to the left, they can move left
+      if (position.x > 0) {
+        position.x -= velocity.x * speedMult;
+
+        //otherwise, don't allow them to move left
+      } else {
+        position.x = 0;
+      }
     }
+
     //moving right
     if ((dPressed && playerNum == 1) || (rightPressed && playerNum == 2)) {
-      position.x += velocity.x * speedMult;
+      //if player hasn't gone offscreen to the right, they can move right
+      if (position.x < 1280) {
+        position.x += velocity.x * speedMult;
+
+        //otherwise, don't allow them to move right
+      } else {
+        position.x = 1280;
+      }
     }
 
     //moving up
     if ((wPressed && playerNum == 1) || (upPressed && playerNum == 2)) {
-      position.y -= velocity.y * speedMult;
+      //if player hasn't gone offscreen upwards, they can move upwards
+      if (position.y > 0) {
+        position.y -= velocity.y * speedMult;
+
+      //otherwise, don't allow them to move up
+      } else {
+        position.y = 0;
+      }
     }
 
     //moving down
     if ((sPressed && playerNum == 1) || (downPressed && playerNum == 2)) {
-      position.y += velocity.y * speedMult;
+      //if player hasn't gone offscreen downwards, they can move downwards
+      if (position.y < 1024) {
+        position.y += velocity.y * speedMult;
+
+      //otherwise, don't allow them to move down
+      } else {
+        position.y = 1024;
+      }
     }
-    
+
     //slowing down
     if ((bPressed && playerNum == 1) || (periodPressed && playerNum == 2)) {
       speedMult = 0.5;
+    
+    //reset speed back to normal when not pressing the slow down key
     } else {
       speedMult = 1;
+    }
+    
+    if ((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) {
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 5, color(0, 255, 0)));
     }
   }
 }

@@ -6,6 +6,12 @@
 Character P1;
 Character P2;
 
+//variable for the amount of lives
+int lives;
+
+//array list that holds all the projectiles
+ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+
 //boolean variables for whether a movement key is pressed
 //P1
 boolean wPressed = false;
@@ -23,9 +29,14 @@ boolean rightPressed = false;
 boolean bPressed = false; //P1
 boolean periodPressed = false; //P2
 
+//boolean variables for whether a shooting key is pressed
+boolean vPressed = false; //P1
+boolean slashPressed = false; //P2
+
 void setup() {
   size(1280, 1024);
-
+  
+  
   P1 = new Character("gen", 1);
   P2 = new Character("gen", 2);
 }
@@ -36,6 +47,16 @@ void draw() {
   P1.update();
   P2.display();
   P2.update();
+  
+  for (int i = 0; i < projectiles.size(); i++) {
+    projectiles.get(i).display();
+    projectiles.get(i).update();
+  }
+}
+
+//function that sets up the game and makes it ready for play
+void reset() {
+  lives = 5;
 }
 
 //function that will set booleans for whether specific keys are pressed to true
@@ -90,6 +111,16 @@ void keyPressed() {
   if (key == '.') {
     periodPressed = true;
   }
+
+  //P1 shooting
+  if (key == 'V' || key == 'v') {
+    vPressed = true;
+  }
+
+  //P2 shooting
+  if (key == '/') {
+    slashPressed = true;
+  }
 }
 
 //function that will set booleans for whether specific keys are pressed to false
@@ -135,5 +166,15 @@ void keyReleased() {
   //P2 slowing down
   if (key == '.') {
     periodPressed = false;
+  }
+
+  //P1 shooting
+  if (key == 'V' || key == 'v') {
+    vPressed = false;
+  }
+
+  //P2 shooting
+  if (key == '/') {
+    slashPressed = false;
   }
 }
