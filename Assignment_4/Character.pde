@@ -104,11 +104,11 @@ class Character {
 
   //function that updates the character (currently only used for move)
   void update() {
-    move();
+    input();
   }
 
-  //function that handles the movement of the character
-  void move() {
+  //function that handles player input for the character
+  void input() {
 
     //moving left
     if ((aPressed && playerNum == 1) || (leftPressed && playerNum == 2)) {
@@ -170,7 +170,7 @@ class Character {
     //shooting
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 5, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
       
       if (ammo < 1) {
@@ -195,5 +195,11 @@ class Character {
         shootingExhaustion = false;
       }
     }
+  }
+  
+  void attack1() {
+    projectiles.add(new Projectile("hostile", position.copy(), new PVector(0, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
+    projectiles.add(new Projectile("hostile", position.copy(), new PVector(5, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
+    projectiles.add(new Projectile("hostile", position.copy(), new PVector(-5, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
   }
 }

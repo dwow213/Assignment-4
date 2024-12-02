@@ -38,7 +38,7 @@ boolean slashPressed = false; //P2
 
 void setup() {
   size(1280, 1024);
-  
+
   //set up game and make it ready for play
   reset();
 }
@@ -50,19 +50,27 @@ void draw() {
   P1.update();
   P2.display();
   P2.update();
-  
+
   boss1.display();
   //enemy.update();
-  
+
   //for loop that handles the projectiles
   for (int i = 0; i < projectiles.size(); i++) {
     //displays and updates all of the projectiles
     projectiles.get(i).display();
     projectiles.get(i).update();
-    
+
     //if a projectile is offscreen, destroy it
     if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.y > 1100) {
       projectiles.remove(i);
+    } else {
+      if (projectiles.get(i).type == "friendly") {
+        if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > boss1.position.x - boss1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < boss1.position.x + boss1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > boss1.position.y - boss1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < boss1.position.y + boss1.size / 2) {
+          projectiles.remove(i);
+          boss1.health -= 1;
+          println("hit");
+        }
+      }
     }
   }
 }
@@ -70,7 +78,7 @@ void draw() {
 //function that sets up the game and makes it ready for play
 void reset() {
   lives = 5;
-  //initialize characters 
+  //initialize characters
   P1 = new Character("gen", 1);
   P2 = new Character("gen", 2);
   boss1 = new Enemy("waste");

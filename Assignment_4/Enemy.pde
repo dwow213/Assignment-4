@@ -8,6 +8,8 @@ class Enemy {
   PVector position;
   PVector velocity;
   PVector acceleration;
+  //variable for the hitbox size of enemy
+  int size;
   //variable for the name of enemy
   String name;
   //variable for the health of enemy
@@ -24,6 +26,7 @@ class Enemy {
       position = new PVector(640, 200);
       velocity = new PVector(10, 10);
       acceleration = new PVector(1, 1);
+      size = 68;
     }
     
     //for loop that will load all frames of enemy sprite into array
@@ -37,6 +40,7 @@ class Enemy {
   void display() {
     //change image mode so it draws in the middle
     imageMode(CENTER);
+    rectMode(CENTER);
 
     //animation changes every 7 frames
     if (frameCount % 7 == 0) {
@@ -45,5 +49,8 @@ class Enemy {
 
     //draw the enemy's sprite on screen
     image(straightSprite[frame], position.x, position.y);
+    rect(position.x, position.y, size, size);
   }
+  
+
 }
