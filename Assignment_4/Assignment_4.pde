@@ -36,27 +36,37 @@ boolean slashPressed = false; //P2
 void setup() {
   size(1280, 1024);
   
-  
-  P1 = new Character("gen", 1);
-  P2 = new Character("gen", 2);
+  //set up game and make it ready for play
+  reset();
 }
 
 void draw() {
   background(0);
+  //display and update the player characters
   P1.display();
   P1.update();
   P2.display();
   P2.update();
   
+  //for loop that handles the projectiles
   for (int i = 0; i < projectiles.size(); i++) {
+    //displays and updates all of the projectiles
     projectiles.get(i).display();
     projectiles.get(i).update();
+    
+    //if a projectile is offscreen, destroy it
+    if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.x > 1100) {
+      projectiles.remove(i);
+    }
   }
 }
 
 //function that sets up the game and makes it ready for play
 void reset() {
   lives = 5;
+  //initialize characters 
+  P1 = new Character("gen", 1);
+  P2 = new Character("gen", 2);
 }
 
 //function that will set booleans for whether specific keys are pressed to true
