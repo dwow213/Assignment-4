@@ -12,6 +12,12 @@ class Character {
   float speedMult;
   //variable for name of character
   String name;
+  //variable that shows how much bullets character has left
+  int ammo;
+  //variable for the max amount of bullets character can have
+  int maxAmmo;
+  //variable for disallowing shooting when using them all
+  boolean shootingExhaustion;
   //variable that determines whether character is P1 or P2
   int playerNum;
 
@@ -33,6 +39,16 @@ class Character {
 
     //set frame to be at start of animation
     frame = 0;
+
+    //checks the character's name to set values for specific parameters
+    if (name == "gen") {
+      maxAmmo = 500;
+    }
+
+    //starting ammo is set to max
+    ammo = maxAmmo;
+    
+    shootingExhaustion = false;
 
     //determines starting position of character based on player assignment
     //if P1 controls this character
@@ -123,7 +139,7 @@ class Character {
       if (position.y > 0) {
         position.y -= velocity.y * speedMult;
 
-      //otherwise, don't allow them to move up
+        //otherwise, don't allow them to move up
       } else {
         position.y = 0;
       }
@@ -135,7 +151,7 @@ class Character {
       if (position.y < 1024) {
         position.y += velocity.y * speedMult;
 
-      //otherwise, don't allow them to move down
+        //otherwise, don't allow them to move down
       } else {
         position.y = 1024;
       }
@@ -144,14 +160,39 @@ class Character {
     //slowing down
     if ((bPressed && playerNum == 1) || (periodPressed && playerNum == 2)) {
       speedMult = 0.5;
-    
+
     //reset speed back to normal when not pressing the slow down key
     } else {
       speedMult = 1;
     }
     
-    if ((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) {
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 5, color(0, 255, 0)));
+    //shooting
+    //only shoots when ammo is over 0
+    if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 1), 1, 5, color(0, 255, 0)));
+      ammo -= 1; //decrease ammo
+      
+      if (ammo < 1) {
+        shootingExhaustion = true;
+      }
+      
+      println(ammo);
+    } else { //regenerates ammo when not shooting
+      //every second, ammo will be restored
+      if (frameCount % 60 == 0) {
+        //if ammo is not full
+        if (ammo < maxAmmo) {
+          //restore 10% of ammo
+          ammo += (maxAmmo * 0.1);
+        } else { //set ammo to max so it doesn't regenerate over the max
+          ammo = maxAmmo;
+        }
+      }
+      
+      //when ammo is at 50%, allow character to shoot again
+      if (ammo >= (maxAmmo * 0.5)) {
+        shootingExhaustion = false;
+      }
     }
   }
 }

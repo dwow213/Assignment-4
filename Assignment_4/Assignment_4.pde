@@ -55,7 +55,7 @@ void draw() {
     projectiles.get(i).update();
     
     //if a projectile is offscreen, destroy it
-    if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.x > 1100) {
+    if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.y > 1100) {
       projectiles.remove(i);
     }
   }
