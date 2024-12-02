@@ -6,6 +6,9 @@
 Character P1;
 Character P2;
 
+//variable for the boss enemy
+Enemy boss1;
+
 //variable for the amount of lives
 int lives;
 
@@ -41,12 +44,15 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(100);
   //display and update the player characters
   P1.display();
   P1.update();
   P2.display();
   P2.update();
+  
+  boss1.display();
+  //enemy.update();
   
   //for loop that handles the projectiles
   for (int i = 0; i < projectiles.size(); i++) {
@@ -67,6 +73,7 @@ void reset() {
   //initialize characters 
   P1 = new Character("gen", 1);
   P2 = new Character("gen", 2);
+  boss1 = new Enemy("waste");
 }
 
 //function that will set booleans for whether specific keys are pressed to true

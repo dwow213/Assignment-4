@@ -48,6 +48,7 @@ class Character {
     //starting ammo is set to max
     ammo = maxAmmo;
     
+    //allow character to shoot at initialization
     shootingExhaustion = false;
 
     //determines starting position of character based on player assignment
@@ -169,7 +170,7 @@ class Character {
     //shooting
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 1), 1, 5, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 5, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
       
       if (ammo < 1) {
