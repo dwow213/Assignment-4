@@ -63,12 +63,33 @@ void draw() {
     //if a projectile is offscreen, destroy it
     if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.y > 1100) {
       projectiles.remove(i);
-    } else {
+    
+    } else { //otherwise, check if it is in a hitbox
+      
+      //if the projectile is a player bullet
       if (projectiles.get(i).type == "friendly") {
+        
+        //check if the bullet is within the enemy's hitbox
         if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > boss1.position.x - boss1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < boss1.position.x + boss1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > boss1.position.y - boss1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < boss1.position.y + boss1.size / 2) {
-          projectiles.remove(i);
-          boss1.health -= 1;
-          println("hit");
+          projectiles.remove(i); //remove the projectile
+          boss1.health -= 1; //decrease the boss's hp
+          println("hit enemy");
+        }
+      
+      //if the projectile is an enemy bullet
+      } else if (projectiles.get(i).type == "hostile") {
+        
+        //check if the bullet is within P1's hitbox
+        if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2) {
+          projectiles.remove(i); //remove the projectile
+          lives -= 1; //decrease the amount of lives
+          println("hit player 1");
+      
+        //check if the bullet is within P2's hitbox
+        } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2) {
+           projectiles.remove(i); //remove the projectile
+          lives -= 1; //decrease the amount of lives
+          println("hit player 2");
         }
       }
     }

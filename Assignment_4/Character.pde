@@ -1,25 +1,19 @@
 class Character {
-
-  //PImage array for the character animation
-  PImage straightSprite[] = new PImage[3];
-  //variable for the frame of animation
-  int frame;
-  //variable for character position
-  PVector position;
-  //variable for how fast the character moves
-  PVector velocity;
-  //variable for multiplies how fast character moves (used for slow down)
-  float speedMult;
-  //variable for name of character
-  String name;
-  //variable that shows how much bullets character has left
-  int ammo;
-  //variable for the max amount of bullets character can have
-  int maxAmmo;
-  //variable for disallowing shooting when using them all
-  boolean shootingExhaustion;
-  //variable that determines whether character is P1 or P2
-  int playerNum;
+  
+  PImage straightSprite[] = new PImage[3]; //PImage array for the character animation
+  int frame; //variable for the frame of animation
+  
+  PVector position; //variable for character position
+  PVector velocity; //variable for how fast the character moves
+  float speedMult; //variable for multiplies how fast character moves (used for slow down)
+  
+  String name; //variable for name of character
+  int playerNum; //variable that determines whether character is P1 or P2
+  int size; //variable for the size of hitbox
+  
+  int ammo; //variable that shows how much bullets character has left
+  int maxAmmo; //variable for the max amount of bullets character can have
+  boolean shootingExhaustion; //variable for disallowing shooting when using them all
 
   //constructor
   Character (String tempName, int tempPlayerNum) {
