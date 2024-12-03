@@ -52,7 +52,7 @@ void draw() {
   P2.update();
 
   boss1.display();
-  //enemy.update();
+  boss1.update();
 
   //for loop that handles the projectiles
   for (int i = 0; i < projectiles.size(); i++) {
@@ -61,7 +61,7 @@ void draw() {
     projectiles.get(i).update();
 
     //if a projectile is offscreen, destroy it
-    if (projectiles.get(i).position.x < -10 || projectiles.get(i).position.x > 1300 || projectiles.get(i).position.y < -10 || projectiles.get(i).position.y > 1100) {
+    if (projectiles.get(i).position.x < -200 || projectiles.get(i).position.x > 1500 || projectiles.get(i).position.y < -200 || projectiles.get(i).position.y > 1300) {
       projectiles.remove(i);
     
     } else { //otherwise, check if it is in a hitbox

@@ -1,5 +1,7 @@
 class Enemy {
-
+  
+  //variable that will allow attacks to be executed
+  Attacks attackCore;
   //PImage array for the character animation
   PImage straightSprite[] = new PImage[4];
   //variable for the frame of animation
@@ -14,6 +16,8 @@ class Enemy {
   String name;
   //variable for the health of enemy
   int health;
+  //array list that will hold the attacks of the enemy
+  ArrayList<String> attacks = new ArrayList<String>();
 
   //constructor
   Enemy (String tempName) {
@@ -27,13 +31,23 @@ class Enemy {
       velocity = new PVector(10, 10);
       acceleration = new PVector(1, 1);
       size = 68;
+      
+      attacks.add("dustSpecks");
     }
+    
+    //set up attacks, passing enemy's position into the object
+    attackCore = new Attacks(position);
     
     //for loop that will load all frames of enemy sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
       straightSprite[i] = loadImage("enemy_" + name + "_straight" + (i + 1) + ".png");
     }
 
+  }
+  
+  //function that updates the enemy, typically for attacks
+  void update() {
+    executeAttacks();
   }
 
   //function that displays the enemy on the screen
@@ -49,8 +63,12 @@ class Enemy {
 
     //draw the enemy's sprite on screen
     image(straightSprite[frame], position.x, position.y);
-    rect(position.x, position.y, size, size);
+    //rect(position.x, position.y, size, size);
   }
   
-
+  void executeAttacks() {
+    if (attacks.get(0) == "dustSpecks") {
+      attackCore.dustSpecks();
+    }
+  }
 }

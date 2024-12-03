@@ -37,6 +37,7 @@ class Character {
     //checks the character's name to set values for specific parameters
     if (name == "gen") {
       maxAmmo = 500;
+      size = 10;
     }
 
     //starting ammo is set to max
@@ -92,7 +93,7 @@ class Character {
     if (speedMult < 1) {
       //draw a red rect in the middle of character
       fill(255, 0, 0);
-      rect(position.x, position.y, 10, 10);
+      rect(position.x, position.y, size, size);
     }
   }
 
@@ -189,11 +190,5 @@ class Character {
         shootingExhaustion = false;
       }
     }
-  }
-  
-  void attack1() {
-    projectiles.add(new Projectile("hostile", position.copy(), new PVector(0, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
-    projectiles.add(new Projectile("hostile", position.copy(), new PVector(5, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
-    projectiles.add(new Projectile("hostile", position.copy(), new PVector(-5, 5), new PVector(0, 0), 1, 5, color(0, 255, 0)));
   }
 }
