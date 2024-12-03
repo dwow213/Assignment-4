@@ -14,6 +14,8 @@ class Enemy {
   int size;
   //variable for the name of enemy
   String name;
+  //boolean variable for whether enemy object is a boss enemy or not
+  boolean bossEnemy;
   //variable for the health of enemy
   int health;
   //variable for the max health of enemy
@@ -22,9 +24,12 @@ class Enemy {
   ArrayList<String> attacks = new ArrayList<String>();
 
   //constructor
-  Enemy (String tempName, PVector tempPosition) {
+  Enemy (String tempName, PVector tempPosition, boolean tempBossEnemy) {
     //set name to the parameter accepted
     name = tempName;
+    
+    //determine if enemy is fodder or a boss based on accepted parameter
+    bossEnemy = tempBossEnemy;
 
     //assign values to variables based on name
     //if enemy is waste
@@ -33,7 +38,7 @@ class Enemy {
       position = new PVector(640, 200);
       velocity = new PVector(10, 10);
       acceleration = new PVector(1, 1);
-      
+
       //set size of hitbox
       size = 68;
 
@@ -44,21 +49,22 @@ class Enemy {
       //add attacks
       attacks.add("dustSpecks");
       attacks.add("garbageDisposal");
-      
-    //if enemy is fodder used for waste's second attack
+      attacks.add("scatteredLitter");
+
+      //if enemy is fodder used for waste's second attack
     } else if (name == "garbageCan") {
       //starting spot is defined by a attack function, but typically right side, then left side
       position = tempPosition;
       velocity = new PVector(5, 5);
       acceleration = new PVector (0, 0);
-      
+
       //set size of hitbox
       size = 320;
 
       //set health and max health
       health = 300;
       maxHealth = 300;
-      
+
       attacks.add("garbageCan");
     }
 
@@ -74,14 +80,32 @@ class Enemy {
   //function that updates the enemy, typically for attacks
   void update() {
     executeAttacks();
-    
+
     //when enemy health runs out
     if (health < 1) {
       //reset the attack core, resetting its timer and direction
       attackCore.reset();
       //remove the current attack from the array list
       attacks.remove(0);
+      //reset hp back to max
       health = maxHealth;
+
+      //check if the enemy is waste
+      if (bossEnemy) {
+        //remove all hostile projectiles if they are
+        for (int i = 0; i < projectiles.size(); i++) {
+          if (projectiles.get(i).type == "hostile") {
+            projectiles.remove(i);
+          }
+        }
+        
+        //remove all fodder enemies
+        for (int i = 0; i < enemies.size(); i++) {
+          if (!enemies.get(i).bossEnemy) {
+            enemies.remove(i);
+          }
+        }
+      }
     }
   }
 
@@ -109,13 +133,17 @@ class Enemy {
     if (attacks.get(0) == "dustSpecks") {
       attackCore.dustSpecks();
     }
-    
+
     if (attacks.get(0) == "garbageDisposal") {
       attackCore.garbageDisposal();
     }
-    
+
     if (attacks.get(0) == "garbageCan") {
       attackCore.garbageCan();
+    }
+    
+    if (attacks.get(0) == "scatteredLitter") {
+      attackCore.scatteredLitter();
     }
   }
 }

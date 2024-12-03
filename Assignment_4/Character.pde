@@ -108,48 +108,48 @@ class Character {
     //moving left
     if ((aPressed && playerNum == 1) || (leftPressed && playerNum == 2)) {
       //if player hasn't gone offscreen to the left, they can move left
-      if (position.x > 0) {
+      if (position.x - 32 > 0) {
         position.x -= velocity.x * speedMult;
 
         //otherwise, don't allow them to move left
       } else {
-        position.x = 0;
+        position.x = 32;
       }
     }
 
     //moving right
     if ((dPressed && playerNum == 1) || (rightPressed && playerNum == 2)) {
       //if player hasn't gone offscreen to the right, they can move right
-      if (position.x < 1280) {
+      if (position.x + 32 < 1280) {
         position.x += velocity.x * speedMult;
 
         //otherwise, don't allow them to move right
       } else {
-        position.x = 1280;
+        position.x = 1248;
       }
     }
 
     //moving up
     if ((wPressed && playerNum == 1) || (upPressed && playerNum == 2)) {
       //if player hasn't gone offscreen upwards, they can move upwards
-      if (position.y > 0) {
+      if (position.y - 45 > 0) {
         position.y -= velocity.y * speedMult;
 
         //otherwise, don't allow them to move up
       } else {
-        position.y = 0;
+        position.y = 45;
       }
     }
 
     //moving down
     if ((sPressed && playerNum == 1) || (downPressed && playerNum == 2)) {
       //if player hasn't gone offscreen downwards, they can move downwards
-      if (position.y < 1024) {
+      if (position.y + 90 < 1024) {
         position.y += velocity.y * speedMult;
 
         //otherwise, don't allow them to move down
       } else {
-        position.y = 1024;
+        position.y = 934;
       }
     }
 

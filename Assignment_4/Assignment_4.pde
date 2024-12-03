@@ -112,7 +112,7 @@ void reset() {
   P1 = new Character("gen", 1);
   P2 = new Character("gen", 2);
 
-  enemies.add(new Enemy("waste", null));
+  enemies.add(new Enemy("waste", null, true));
 }
 
 //function that will set booleans for whether specific keys are pressed to true
