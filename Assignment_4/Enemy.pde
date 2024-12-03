@@ -1,5 +1,5 @@
 class Enemy {
-  
+
   //variable that will allow attacks to be executed
   Attacks attackCore;
   //PImage array for the character animation
@@ -16,6 +16,8 @@ class Enemy {
   String name;
   //variable for the health of enemy
   int health;
+  //variable for the max health of enemy
+  int maxHealth;
   //array list that will hold the attacks of the enemy
   ArrayList<String> attacks = new ArrayList<String>();
 
@@ -23,7 +25,7 @@ class Enemy {
   Enemy (String tempName) {
     //set name to the parameter accepted
     name = tempName;
-    
+
     //assign values to variables based on name
     if (name == "waste") {
       //starting spot of enemy is at the middle top, with normal velocity and standard acceleration (velocity and acceleration dont really matter rn)
@@ -32,19 +34,21 @@ class Enemy {
       acceleration = new PVector(1, 1);
       size = 68;
       
+      //health
+      health = 750;
+      maxHealth = 750;
       attacks.add("dustSpecks");
     }
-    
+
     //set up attacks, passing enemy's position into the object
     attackCore = new Attacks(position);
-    
+
     //for loop that will load all frames of enemy sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
       straightSprite[i] = loadImage("enemy_" + name + "_straight" + (i + 1) + ".png");
     }
-
   }
-  
+
   //function that updates the enemy, typically for attacks
   void update() {
     executeAttacks();
@@ -63,9 +67,13 @@ class Enemy {
 
     //draw the enemy's sprite on screen
     image(straightSprite[frame], position.x, position.y);
+    
+    //draw a red health bar of enemy
+    fill(255, 0, 0);
+    rect(position.x, position.y - 70, map(health, 0, maxHealth, 0, 200), 20);
     //rect(position.x, position.y, size, size);
   }
-  
+
   void executeAttacks() {
     if (attacks.get(0) == "dustSpecks") {
       attackCore.dustSpecks();

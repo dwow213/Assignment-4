@@ -15,6 +15,9 @@ int lives;
 //array list that holds all the projectiles
 ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
+
+//ArrayList<Enemy> fodder = new ArrayList<Enemy>();
+
 //boolean variables for whether a movement key is pressed
 //P1
 boolean wPressed = false;

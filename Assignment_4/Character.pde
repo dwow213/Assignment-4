@@ -166,6 +166,8 @@ class Character {
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(-5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
       
       if (ammo < 1) {
