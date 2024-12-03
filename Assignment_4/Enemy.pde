@@ -22,22 +22,44 @@ class Enemy {
   ArrayList<String> attacks = new ArrayList<String>();
 
   //constructor
-  Enemy (String tempName) {
+  Enemy (String tempName, PVector tempPosition) {
     //set name to the parameter accepted
     name = tempName;
 
     //assign values to variables based on name
+    //if enemy is waste
     if (name == "waste") {
       //starting spot of enemy is at the middle top, with normal velocity and standard acceleration (velocity and acceleration dont really matter rn)
       position = new PVector(640, 200);
       velocity = new PVector(10, 10);
       acceleration = new PVector(1, 1);
-      size = 68;
       
-      //health
-      health = 750;
-      maxHealth = 750;
+      //set size of hitbox
+      size = 68;
+
+      //set health and max health
+      health = 100;
+      maxHealth = 800;
+
+      //add attacks
       attacks.add("dustSpecks");
+      attacks.add("garbageDisposal");
+      
+    //if enemy is fodder used for waste's second attack
+    } else if (name == "garbageCan") {
+      //starting spot is defined by a attack function, but typically right side, then left side
+      position = tempPosition;
+      velocity = new PVector(5, 5);
+      acceleration = new PVector (0, 0);
+      
+      //set size of hitbox
+      size = 320;
+
+      //set health and max health
+      health = 300;
+      maxHealth = 300;
+      
+      attacks.add("garbageCan");
     }
 
     //set up attacks, passing enemy's position into the object
@@ -52,6 +74,15 @@ class Enemy {
   //function that updates the enemy, typically for attacks
   void update() {
     executeAttacks();
+    
+    //when enemy health runs out
+    if (health < 1) {
+      //reset the attack core, resetting its timer and direction
+      attackCore.reset();
+      //remove the current attack from the array list
+      attacks.remove(0);
+      health = maxHealth;
+    }
   }
 
   //function that displays the enemy on the screen
@@ -67,16 +98,24 @@ class Enemy {
 
     //draw the enemy's sprite on screen
     image(straightSprite[frame], position.x, position.y);
-    
+
     //draw a red health bar of enemy
     fill(255, 0, 0);
     rect(position.x, position.y - 70, map(health, 0, maxHealth, 0, 200), 20);
-    //rect(position.x, position.y, size, size);
   }
 
+  //function that executes the attacks the enemy may have
   void executeAttacks() {
     if (attacks.get(0) == "dustSpecks") {
       attackCore.dustSpecks();
+    }
+    
+    if (attacks.get(0) == "garbageDisposal") {
+      attackCore.garbageDisposal();
+    }
+    
+    if (attacks.get(0) == "garbageCan") {
+      attackCore.garbageCan();
     }
   }
 }

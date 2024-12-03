@@ -6,17 +6,14 @@
 Character P1;
 Character P2;
 
-//variable for the boss enemy
-Enemy boss1;
-
 //variable for the amount of lives
 int lives;
 
 //array list that holds all the projectiles
 ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
-
-//ArrayList<Enemy> fodder = new ArrayList<Enemy>();
+//array list that holds the all the enemies
+ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 //boolean variables for whether a movement key is pressed
 //P1
@@ -41,7 +38,7 @@ boolean slashPressed = false; //P2
 
 void setup() {
   size(1280, 1024);
-
+  frameRate(60);
   //set up game and make it ready for play
   reset();
 }
@@ -54,47 +51,56 @@ void draw() {
   P2.display();
   P2.update();
 
-  boss1.display();
-  boss1.update();
+  //display and update boss enemy
 
-  //for loop that handles the projectiles
-  for (int i = 0; i < projectiles.size(); i++) {
-    //displays and updates all of the projectiles
-    projectiles.get(i).display();
-    projectiles.get(i).update();
+  //for loop that display and update enemies
+  for (int a = 0; a < enemies.size(); a++) {
+    enemies.get(a).display();
+    enemies.get(a).update();
 
-    //if a projectile is offscreen, destroy it
-    if (projectiles.get(i).position.x < -200 || projectiles.get(i).position.x > 1500 || projectiles.get(i).position.y < -200 || projectiles.get(i).position.y > 1300) {
-      projectiles.remove(i);
-    
-    } else { //otherwise, check if it is in a hitbox
-      
-      //if the projectile is a player bullet
-      if (projectiles.get(i).type == "friendly") {
-        
-        //check if the bullet is within the enemy's hitbox
-        if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > boss1.position.x - boss1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < boss1.position.x + boss1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > boss1.position.y - boss1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < boss1.position.y + boss1.size / 2) {
-          projectiles.remove(i); //remove the projectile
-          boss1.health -= 1; //decrease the boss's hp
-          println("hit enemy");
-        }
-      
-      //if the projectile is an enemy bullet
-      } else if (projectiles.get(i).type == "hostile") {
-        
-        //check if the bullet is within P1's hitbox
-        if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2) {
-          projectiles.remove(i); //remove the projectile
-          lives -= 1; //decrease the amount of lives
-          println("hit player 1");
-      
-        //check if the bullet is within P2's hitbox
-        } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2) {
-           projectiles.remove(i); //remove the projectile
-          lives -= 1; //decrease the amount of lives
-          println("hit player 2");
+    //for loop that handles the projectiles
+    for (int i = 0; i < projectiles.size(); i++) {
+      //displays and updates all of the projectiles
+      projectiles.get(i).display();
+      projectiles.get(i).update();
+
+      //if a projectile is offscreen, destroy it
+      if (projectiles.get(i).position.x < -200 || projectiles.get(i).position.x > 1500 || projectiles.get(i).position.y < -200 || projectiles.get(i).position.y > 1300) {
+        projectiles.remove(i);
+      } else { //otherwise, check if it is in a hitbox
+
+        //if the projectile is a player bullet
+        if (projectiles.get(i).type == "friendly") {
+
+          //check if the bullet is within the enemy's hitbox
+          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > enemies.get(a).position.x - enemies.get(a).size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < enemies.get(a).position.x + enemies.get(a).size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > enemies.get(a).position.y - enemies.get(a).size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < enemies.get(a).position.y + enemies.get(a).size / 2) {
+            projectiles.remove(i); //remove the projectile
+            enemies.get(a).health -= 1; //decrease the boss's hp
+            println("hit enemy");
+          }
+
+          //if the projectile is an enemy bullet
+        } else if (projectiles.get(i).type == "hostile") {
+
+          //check if the bullet is within P1's hitbox
+          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2) {
+            projectiles.remove(i); //remove the projectile
+            lives -= 1; //decrease the amount of lives
+            println("hit player 1");
+
+            //check if the bullet is within P2's hitbox
+          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2) {
+            projectiles.remove(i); //remove the projectile
+            lives -= 1; //decrease the amount of lives
+            println("hit player 2");
+          }
         }
       }
+    }
+
+    //if an enemy is offscreen or has no more attacks (lost all hp), destroy it
+    if ((enemies.get(a).position.x < -200 || enemies.get(a).position.x > 1500 || enemies.get(a).position.y < -200 || enemies.get(a).position.y > 1300) || enemies.get(a).attacks.isEmpty()) {
+      enemies.remove(a);
     }
   }
 }
@@ -102,10 +108,11 @@ void draw() {
 //function that sets up the game and makes it ready for play
 void reset() {
   lives = 5;
-  //initialize characters
+  //instantiate characters and boss
   P1 = new Character("gen", 1);
   P2 = new Character("gen", 2);
-  boss1 = new Enemy("waste");
+
+  enemies.add(new Enemy("waste", null));
 }
 
 //function that will set booleans for whether specific keys are pressed to true
