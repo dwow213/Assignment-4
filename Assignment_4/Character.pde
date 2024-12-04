@@ -1,19 +1,21 @@
 class Character {
-  
+
   PImage straightSprite[] = new PImage[3]; //PImage array for the character animation
   int frame; //variable for the frame of animation
-  
+
   PVector position; //variable for character position
   PVector velocity; //variable for how fast the character moves
   float speedMult; //variable for multiplies how fast character moves (used for slow down)
-  
+
   String name; //variable for name of character
   int playerNum; //variable that determines whether character is P1 or P2
   int size; //variable for the size of hitbox
-  
+
   int ammo; //variable that shows how much bullets character has left
   int maxAmmo; //variable for the max amount of bullets character can have
   boolean shootingExhaustion; //variable for disallowing shooting when using them all
+
+  boolean deadState; //variable for determining whether character is dead
 
   //constructor
   Character (String tempName, int tempPlayerNum) {
@@ -25,6 +27,9 @@ class Character {
     velocity = new PVector(10, 10);
     //set the speed multiplier to 1, not affecting velocity at all
     speedMult = 1;
+
+    //character starts out alive when initialized
+    deadState = false;
 
     //for loop that will load all frames of character sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
@@ -42,7 +47,7 @@ class Character {
 
     //starting ammo is set to max
     ammo = maxAmmo;
-    
+
     //allow character to shoot at initialization
     shootingExhaustion = false;
 
@@ -97,9 +102,11 @@ class Character {
     }
   }
 
-  //function that updates the character (currently only used for move)
+  //function that updates the character (currently only used for the input function)
   void update() {
-    input();
+    if (!deadState) {
+      input();
+    }
   }
 
   //function that handles player input for the character
@@ -157,11 +164,11 @@ class Character {
     if ((bPressed && playerNum == 1) || (periodPressed && playerNum == 2)) {
       speedMult = 0.5;
 
-    //reset speed back to normal when not pressing the slow down key
+      //reset speed back to normal when not pressing the slow down key
     } else {
       speedMult = 1;
     }
-    
+
     //shooting
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
@@ -169,12 +176,10 @@ class Character {
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(-5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
-      
+
       if (ammo < 1) {
         shootingExhaustion = true;
       }
-      
-      println(ammo);
     } else { //regenerates ammo when not shooting
       //every second, ammo will be restored
       if (frameCount % 60 == 0) {
@@ -186,7 +191,7 @@ class Character {
           ammo = maxAmmo;
         }
       }
-      
+
       //when ammo is at 50%, allow character to shoot again
       if (ammo >= (maxAmmo * 0.5)) {
         shootingExhaustion = false;

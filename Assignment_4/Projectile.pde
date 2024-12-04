@@ -4,13 +4,12 @@ class Projectile {
   PVector position;
   PVector velocity;
   PVector acceleration;
-  int accelRate; 
-  //variable for the type of projectile (hostile, friendly, pickup)
-  String type;
-  //variable for the color of the projectile
-  color colour;
-  //variable for the size of the projectile
-  int size;
+  
+  int accelRate; //variable for accelerating the velocity at a specific rate of frames (such as accelerate every 20 frames)
+  
+  String type; //variable for the type of projectile (hostile, friendly, score, life, bomb)
+  color colour; //variable for the color of the projectile
+  int size; //variable for the size of the projectile
   
   //constructor
   Projectile (String tempType, PVector tempPosition, PVector tempVelocity, PVector tempAcceleration, int tempAccelRate, int tempSize, color tempColor) {

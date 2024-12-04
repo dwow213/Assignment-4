@@ -51,8 +51,6 @@ void draw() {
   P2.display();
   P2.update();
 
-  //display and update boss enemy
-
   //for loop that display and update enemies
   for (int a = 0; a < enemies.size(); a++) {
     enemies.get(a).display();
@@ -76,22 +74,23 @@ void draw() {
           if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > enemies.get(a).position.x - enemies.get(a).size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < enemies.get(a).position.x + enemies.get(a).size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > enemies.get(a).position.y - enemies.get(a).size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < enemies.get(a).position.y + enemies.get(a).size / 2) {
             projectiles.remove(i); //remove the projectile
             enemies.get(a).health -= 1; //decrease the boss's hp
-            println("hit enemy");
           }
 
           //if the projectile is an enemy bullet
         } else if (projectiles.get(i).type == "hostile") {
 
-          //check if the bullet is within P1's hitbox
-          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2) {
+          //check if the bullet is within P1's hitbox and if P1 is not dead
+          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
+            P1.deadState = true;
             println("hit player 1");
 
-            //check if the bullet is within P2's hitbox
-          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2) {
+            //check if the bullet is within P2's hitbox and if P2 is not dead
+          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
+            P2.deadState = true;
             println("hit player 2");
           }
         }

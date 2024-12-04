@@ -1,25 +1,23 @@
 class Enemy {
 
-  //variable that will allow attacks to be executed
-  Attacks attackCore;
-  //PImage array for the character animation
-  PImage straightSprite[] = new PImage[4];
-  //variable for the frame of animation
-  int frame;
+  
+  Attacks attackCore; //variable that will allow attacks to be executed
+  
+  PImage straightSprite[] = new PImage[4];//PImage array for the character animation
+  int frame;//variable for the frame of animation
+  
   //variables for projectile position, velocity and acceleration
   PVector position;
   PVector velocity;
   PVector acceleration;
-  //variable for the hitbox size of enemy
-  int size;
-  //variable for the name of enemy
-  String name;
-  //boolean variable for whether enemy object is a boss enemy or not
-  boolean bossEnemy;
-  //variable for the health of enemy
-  int health;
-  //variable for the max health of enemy
-  int maxHealth;
+  
+  int size; //variable for the hitbox size of enemy
+  String name; //variable for the name of enemy
+  boolean bossEnemy; //boolean variable for whether enemy object is a boss enemy or not
+  
+  int health; //variable for the health of enemy
+  int maxHealth; //variable for the max health of enemy
+  
   //array list that will hold the attacks of the enemy
   ArrayList<String> attacks = new ArrayList<String>();
 
@@ -43,7 +41,7 @@ class Enemy {
       size = 68;
 
       //set health and max health
-      health = 100;
+      health = 800;
       maxHealth = 800;
 
       //add attacks
