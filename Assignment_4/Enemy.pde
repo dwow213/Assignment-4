@@ -1,6 +1,5 @@
 class Enemy {
 
-
   Attacks attackCore; //variable that will allow attacks to be executed
 
   PImage straightSprite[] = new PImage[4];//PImage array for the character animation
@@ -50,9 +49,6 @@ class Enemy {
       attacks.add("garbageDisposal");
       attacks.add("scatteredLitter");
       attacks.add("dustSpecks");
-      
-      
-      
 
       //if enemy is fodder used for waste's second attack
     } else if (name == "garbageCan") {
@@ -67,7 +63,8 @@ class Enemy {
       //set health and max health
       health = 300;
       maxHealth = 300;
-
+      
+      //add attacks
       attacks.add("garbageCan");
     }
 
@@ -114,7 +111,7 @@ class Enemy {
 
   //function that displays the enemy on the screen
   void display() {
-    //change image mode so it draws in the middle
+    //change image and rect mode so it draws in the middle
     imageMode(CENTER);
     rectMode(CENTER);
 
@@ -131,7 +128,7 @@ class Enemy {
     rect(position.x, position.y - 70, map(health, 0, maxHealth, 0, 200), 20);
   }
 
-  //function that executes the attacks the enemy may have
+  //function that executes the first attack enemy has in their attacks array list
   void executeAttacks() {
     if (attacks.get(0) == "trashAttack") {
       attackCore.trashAttack();

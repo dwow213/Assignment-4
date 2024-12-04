@@ -80,7 +80,8 @@ void draw() {
 
       //on the game win menu
     } else if (menu == 2) {
-
+      
+      //display the game win menu
       image(gameWinMenu, 0, 0);
 
       //when any key is pressed
@@ -90,7 +91,8 @@ void draw() {
 
       //on the game over menu
     } else if (menu == 3) {
-
+      
+      //display the game over menu
       image(gameOverMenu, 0, 0);
 
       //when any key is pressed

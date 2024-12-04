@@ -118,14 +118,6 @@ class Attacks {
     }
   }
 
-
-
-
-
-
-
-
-
   //reset the timer (used when new attacks appear)
   void reset() {
     timer = 0;
