@@ -3,7 +3,7 @@
 //Assignment 4
 
 //boolean variable that determines whether the game is being played
-boolean playingGame = false;
+boolean playingGame = true;
 //variable that specifies which menu should be shown
 int menu = 1;
 
@@ -49,75 +49,83 @@ void setup() {
 }
 
 void draw() {
-  background(100);
+  //when the game is not being played and we are in the menu
+  if (!playingGame) {
   
-  //display the amount of lives left at the top left corner of the screen
-  textSize(50);
-  fill(185);
-  text("Lives: " + lives, 25, 60);
-  
-  //display and update the player characters
-  P1.display();
-  P1.update();
-  P2.display();
-  P2.update();
+    
+    
+  } else {
 
-  //for loop that display and update enemies
-  for (int a = 0; a < enemies.size(); a++) {
-    enemies.get(a).display();
-    enemies.get(a).update();
+    background(100);
 
-    //for loop that handles the projectiles
-    for (int i = 0; i < projectiles.size(); i++) {
-      //displays and updates all of the projectiles
-      projectiles.get(i).display();
-      projectiles.get(i).update();
+    //display the amount of lives left at the top left corner of the screen
+    textSize(50);
+    fill(185);
+    text("Lives: " + lives, 25, 60);
 
-      //if a projectile is offscreen, destroy it
-      if (projectiles.get(i).position.x < -200 || projectiles.get(i).position.x > 1500 || projectiles.get(i).position.y < -200 || projectiles.get(i).position.y > 1300) {
-        projectiles.remove(i);
-      } else { //otherwise, check if it is in a hitbox
+    //display and update the player characters
+    P1.display();
+    P1.update();
+    P2.display();
+    P2.update();
 
-        //if the projectile is a player bullet
-        if (projectiles.get(i).type == "friendly") {
+    //for loop that display and update enemies
+    for (int a = 0; a < enemies.size(); a++) {
+      enemies.get(a).display();
+      enemies.get(a).update();
 
-          //check if the bullet is within the enemy's hitbox
-          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > enemies.get(a).position.x - enemies.get(a).size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < enemies.get(a).position.x + enemies.get(a).size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > enemies.get(a).position.y - enemies.get(a).size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < enemies.get(a).position.y + enemies.get(a).size / 2) {
-            projectiles.remove(i); //remove the projectile
-            enemies.get(a).health -= 1; //decrease the boss's hp
-          }
+      //for loop that handles the projectiles
+      for (int i = 0; i < projectiles.size(); i++) {
+        //displays and updates all of the projectiles
+        projectiles.get(i).display();
+        projectiles.get(i).update();
 
-          //if the projectile is an enemy bullet
-        } else if (projectiles.get(i).type == "hostile") {
+        //if a projectile is offscreen, destroy it
+        if (projectiles.get(i).position.x < -200 || projectiles.get(i).position.x > 1500 || projectiles.get(i).position.y < -200 || projectiles.get(i).position.y > 1300) {
+          projectiles.remove(i);
+        } else { //otherwise, check if it is in a hitbox
 
-          //check if the bullet is within P1's hitbox and if P1 is not dead
-          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState && !P1.invincibleState) {
-            projectiles.remove(i); //remove the projectile
-            lives -= 1; //decrease the amount of lives
-            P1.deadState = true; //make P1 dead
-            P1.deathTimer = 600; //reset P1 death timer to max
-            println("hit player 1");
+          //if the projectile is a player bullet
+          if (projectiles.get(i).type == "friendly") {
 
-            //check if the bullet is within P2's hitbox and if P2 is not dead
-          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState && !P2.invincibleState) {
-            projectiles.remove(i); //remove the projectile
-            lives -= 1; //decrease the amount of lives
-            P2.deadState = true; //make P2 dead
-            P2.deathTimer = 600; //reset P1 death timer to max
-            println("hit player 2");
+            //check if the bullet is within the enemy's hitbox
+            if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > enemies.get(a).position.x - enemies.get(a).size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < enemies.get(a).position.x + enemies.get(a).size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > enemies.get(a).position.y - enemies.get(a).size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < enemies.get(a).position.y + enemies.get(a).size / 2) {
+              projectiles.remove(i); //remove the projectile
+              enemies.get(a).health -= 1; //decrease the boss's hp
+            }
+
+            //if the projectile is an enemy bullet
+          } else if (projectiles.get(i).type == "hostile") {
+
+            //check if the bullet is within P1's hitbox and if P1 is not dead
+            if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState && !P1.invincibleState) {
+              projectiles.remove(i); //remove the projectile
+              lives -= 1; //decrease the amount of lives
+              P1.deadState = true; //make P1 dead
+              P1.deathTimer = 600; //reset P1 death timer to max
+              println("hit player 1");
+
+              //check if the bullet is within P2's hitbox and if P2 is not dead
+            } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState && !P2.invincibleState) {
+              projectiles.remove(i); //remove the projectile
+              lives -= 1; //decrease the amount of lives
+              P2.deadState = true; //make P2 dead
+              P2.deathTimer = 600; //reset P1 death timer to max
+              println("hit player 2");
+            }
           }
         }
       }
+
+      //if an enemy is offscreen or has no more attacks (lost all hp), destroy it
+      if ((enemies.get(a).position.x < -200 || enemies.get(a).position.x > 1500 || enemies.get(a).position.y < -200 || enemies.get(a).position.y > 1300) || enemies.get(a).attacks.isEmpty()) {
+        enemies.remove(a);
+      }
     }
 
-    //if an enemy is offscreen or has no more attacks (lost all hp), destroy it
-    if ((enemies.get(a).position.x < -200 || enemies.get(a).position.x > 1500 || enemies.get(a).position.y < -200 || enemies.get(a).position.y > 1300) || enemies.get(a).attacks.isEmpty()) {
-      enemies.remove(a);
-    }
+    //revive characters if needed
+    revive();
   }
-  
-  //revive characters if needed
-  revive();
 }
 
 //function that sets up the game and makes it ready for play
@@ -125,14 +133,14 @@ void reset() {
   lives = 5;
   //instantiate characters and boss
   P1 = new Character("gen", 1);
-  P2 = new Character("gen", 2);
+  P2 = new Character("blu", 2);
 
   enemies.add(new Enemy("waste", null, true));
 }
 
 //function for the reviving of players
 void revive() {
-  
+
   //when both players are dead
   if (P1.deadState && P2.deadState) {
     //immediately revive both of them
@@ -142,7 +150,7 @@ void revive() {
     P1.position = new PVector(600, 900);
     P2.position = new PVector(680, 900);
   }
-  
+
   //players can only be revived if there are some lives remaining
   if (lives > 0) {
     //if P1 is dead

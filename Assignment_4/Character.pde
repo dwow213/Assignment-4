@@ -1,7 +1,7 @@
 class Character {
-  
+
   Attacks attackCore; //variable that will allow attacks to be executed
-  
+
   PImage straightSprite[] = new PImage[3]; //PImage array for the character animation
   int frame; //variable for the frame of animation
 
@@ -20,7 +20,7 @@ class Character {
   boolean deadState; //variable for determining whether character is dead
   int revivalProgress; //variable for the progress of revival when dead
   int deathTimer; //variable for the amount of time left to be revived before losing another life
-  
+
   boolean invincibleState; //variable for determining whether character is invincible and cannot be damaged
   int invincibilityTimer; //variable for the duration of invincibility;
 
@@ -34,15 +34,15 @@ class Character {
     velocity = new PVector(10, 10);
     //set the speed multiplier to 1, not affecting velocity at all
     speedMult = 1;
-    
+
     //set up attacks for bombs, passing character's position into the Attack object
     attackCore = new Attacks(position);
-    
+
     //character starts out alive when initialized
     deadState = false;
     revivalProgress = 0;
     deathTimer = 600; //death timer set to max time (10 seconds)
-    
+
     //for loop that will load all frames of character sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
       straightSprite[i] = loadImage(name + "_straight" + (i + 1) + ".png");
@@ -52,9 +52,13 @@ class Character {
     frame = 0;
 
     //checks the character's name to set values for specific parameters
+    //gen has more ammo then blu, but blu has a smaller hitbox
     if (name == "gen") {
       maxAmmo = 500;
       size = 10;
+    } else if (name == "blu") {
+      maxAmmo = 350;
+      size = 7;
     }
 
     //starting ammo is set to max
@@ -85,16 +89,24 @@ class Character {
     if (frameCount % 7 == 0) {
       frame = (frame + 1) % straightSprite.length;
     }
-    
+
+    //drawing the bar
+    //when ammo is not full -
     if (ammo < maxAmmo) {
+      //when character did not exhaust their shooting
       if (!shootingExhaustion) {
+        //make the bar green
         fill(0, 255, 0, 100);
+
+        //when the character did exhaust their shooting
       } else {
+        //make the bar dark green
         fill(0, 65, 0, 100);
       }
+      //draw the ammo bar as a rect
       rect(position.x - 65, position.y, 10, map(ammo, 0, maxAmmo, 0, 100));
     }
-    
+
     //if character is invincible, indicate they're invincible by drawing a green outline around them
     if (invincibleState) {
       fill(0, 0, 0, 0);
@@ -102,7 +114,7 @@ class Character {
       rect(position.x, position.y, 100, 100);
       stroke(0); //reset stroke back to 0 so it doesn't affect other shapes drawn
     }
-    
+
     //if character is dead, draw the revival bar and death timer bar
     if (deadState) {
       //draw the red revival bar
@@ -115,7 +127,7 @@ class Character {
       rect(position.x, position.y, map(revivalProgress, 0, 300, 0, 100), 100);
       fill(0); //reset fill back to 0
     }
-    
+
     //draw the character's sprite on screen with rotation in mind
     //set up for rotation with pushing matrix and translating
     pushMatrix();
@@ -149,11 +161,10 @@ class Character {
     //if character isn't dead, accept command input
     if (!deadState) {
       input();
-    
     } else if (lives > 0) { //if character is dead
       //count down death timer by one every frame
       deathTimer -= 1;
-      
+
       //when deathTimer reaches 0 and there is at least 1 life remaining
       if (deathTimer <= 0) {
         lives -= 1; //lose a life
@@ -161,19 +172,19 @@ class Character {
         revivalProgress = 0; //reset revival progress
       }
     }
-    
+
     //when character has been revived for 5 seconds
     if (revivalProgress >= 300) {
       deadState = false; //revive character
       revivalProgress = 0; //reset the revival progress of character
-      
+
       invincibleState = true; //turn character invincible
-      invincibilityTimer = 0; //reset invincibility timer, so that the invincibility lasts for 3 seconds 
+      invincibilityTimer = 0; //reset invincibility timer, so that the invincibility lasts for 3 seconds
     }
-    
+
     //increase the invincibility timer by 1 every frame
     invincibilityTimer += 1;
-    
+
     //when 3 seconds has passed, remove invincibility
     if (invincibilityTimer == 180) {
       invincibleState = false;
@@ -243,12 +254,24 @@ class Character {
     //shooting
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
-      //shoots 3 bullets straight, left and right
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(-15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
-      ammo -= 1; //decrease ammo
       
+      //gen's bullets
+      if (name == "gen") {
+        //shoots 3 bullets straight, left and right
+        projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+        projectiles.add(new Projectile("friendly", position.copy(), new PVector(15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+        projectiles.add(new Projectile("friendly", position.copy(), new PVector(-15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      
+      //blu's bullets
+      } else if (name == "blu") {
+        //shoots 3 bullets straight
+        projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+        projectiles.add(new Projectile("friendly", new PVector(position.x + 10, position.y), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+        projectiles.add(new Projectile("friendly", new PVector(position.x - 10, position.y), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      }
+
+      ammo -= 1; //decrease ammo
+
       //if ammo is completely depleted, don't allow player to shoot for some time
       if (ammo < 1) {
         shootingExhaustion = true;
