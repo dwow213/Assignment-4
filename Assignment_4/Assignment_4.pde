@@ -2,6 +2,11 @@
 //Assignment 4
 //Assignment 4
 
+//boolean variable that determines whether the game is being played
+boolean playingGame = false;
+//variable that specifies which menu should be shown
+int menu = 1;
+
 //variables for player 1 character and player 2 character
 Character P1;
 Character P2;

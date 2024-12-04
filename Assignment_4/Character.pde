@@ -243,13 +243,13 @@ class Character {
     //shooting
     //only shoots when ammo is over 0
     if (((vPressed && playerNum == 1) || (slashPressed && playerNum == 2)) && ammo > 0 && !shootingExhaustion) {
+      //shoots 3 bullets straight, left and right
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
-      projectiles.add(new Projectile("friendly", position.copy(), new PVector(-5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(-15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
-
+      
+      //if ammo is completely depleted, don't allow player to shoot for some time
       if (ammo < 1) {
         shootingExhaustion = true;
       }
