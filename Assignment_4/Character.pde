@@ -16,6 +16,10 @@ class Character {
   boolean shootingExhaustion; //variable for disallowing shooting when using them all
 
   boolean deadState; //variable for determining whether character is dead
+  int revivalProgress; //variable for the progress of revival when dead
+  
+  boolean invincibleState; //variable for determining whether character is invincible and cannot be damaged
+  int invincibilityTimer; //variable for the duration of invincibility;
 
   //constructor
   Character (String tempName, int tempPlayerNum) {
@@ -30,6 +34,7 @@ class Character {
 
     //character starts out alive when initialized
     deadState = false;
+    revivalProgress = 0;
 
     //for loop that will load all frames of character sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
@@ -73,7 +78,25 @@ class Character {
     if (frameCount % 7 == 0) {
       frame = (frame + 1) % straightSprite.length;
     }
-
+    
+    //if character is invincible, indicate they're invincible by drawing a green outline around them
+    if (invincibleState) {
+      fill(0, 0, 0, 0);
+      stroke(0, 255, 0);
+      rect(position.x, position.y, 100, 100);
+      stroke(0); //reset stroke back to 0 so it doesn't affect other shapes drawn
+    }
+    
+    //if character is dead, draw the revival bar
+    if (deadState) {
+      //draw the red revival bar
+      fill(255, 0, 0, 100);
+      rect(position.x, position.y, 100, 100);
+      //draw the green revival bar, whose width is determined by revivalProgress
+      fill(0, 255, 0, 100);
+      rect(position.x, position.y, map(revivalProgress, 0, 300, 0, 100), 100);
+    }
+    
     //draw the character's sprite on screen with rotation in mind
     //set up for rotation with pushing matrix and translating
     pushMatrix();
@@ -102,10 +125,27 @@ class Character {
     }
   }
 
-  //function that updates the character (currently only used for the input function)
+  //function that updates the character such as command inputs, revival and invincibility
   void update() {
     if (!deadState) {
       input();
+    }
+    
+    //when character has been revived for 5 seconds
+    if (revivalProgress >= 300) {
+      deadState = false; //revive character
+      revivalProgress = 0; //reset the revival progress of character
+      
+      invincibleState = true; //turn character invincible
+      invincibilityTimer = 0; //reset invincibility timer, so that the invincibility lasts for 3 seconds 
+    }
+    
+    //increase the invincibility timer by 1 every frame
+    invincibilityTimer += 1;
+    
+    //when 3 seconds has passed, remove invincibility
+    if (invincibilityTimer == 180) {
+      invincibleState = false;
     }
   }
 

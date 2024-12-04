@@ -80,14 +80,14 @@ void draw() {
         } else if (projectiles.get(i).type == "hostile") {
 
           //check if the bullet is within P1's hitbox and if P1 is not dead
-          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState) {
+          if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState && !P1.invincibleState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
             P1.deadState = true;
             println("hit player 1");
 
             //check if the bullet is within P2's hitbox and if P2 is not dead
-          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState) {
+          } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState && !P2.invincibleState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
             P2.deadState = true;
@@ -102,6 +102,8 @@ void draw() {
       enemies.remove(a);
     }
   }
+
+  revive();
 }
 
 //function that sets up the game and makes it ready for play
@@ -112,6 +114,39 @@ void reset() {
   P2 = new Character("gen", 2);
 
   enemies.add(new Enemy("waste", null, true));
+}
+
+//function for the reviving of players
+void revive() {
+  
+  //when both players are dead
+  if (P1.deadState && P2.deadState) {
+    //immediately revive both of them
+    P1.revivalProgress = 300;
+    P2.revivalProgress = 300;
+    //set their position back
+    P1.position = new PVector(600, 900);
+    P2.position = new PVector(680, 900);
+  }
+  
+  //players can only be revived if there are some lives remaining
+  if (lives > 0) {
+    //if P1 is dead
+    if (P1.deadState) {
+      //if P2's hitbox is within P2's hitbox
+      if (P2.position.x - P2.size > P1.position.x - 100 && P2.position.x + P2.size < P1.position.x + 100 && P2.position.y - P2.size > P1.position.y - 100 && P2.position.y + P2.size < P1.position.y + 100) {
+        //build revival progress for P1
+        P1.revivalProgress += 1;
+      }
+      //if P2 is dead
+    } else if (P2.deadState) {
+      //if P1's hitbox is within P2's hitbox
+      if (P1.position.x - P1.size > P2.position.x - 100 && P1.position.x + P1.size < P2.position.x + 100 && P1.position.y - P1.size > P2.position.y - 100 && P1.position.y + P1.size < P2.position.y + 100) {
+        //build revival progress for P2
+        P2.revivalProgress += 1;
+      }
+    }
+  }
 }
 
 //function that will set booleans for whether specific keys are pressed to true
