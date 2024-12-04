@@ -45,6 +45,11 @@ void setup() {
 
 void draw() {
   background(100);
+  
+  //display the amount of lives left at the top left corner of the screen
+  textSize(50);
+  text("Lives: " + lives, 25, 60);
+  
   //display and update the player characters
   P1.display();
   P1.update();
@@ -83,14 +88,16 @@ void draw() {
           if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P1.position.x - P1.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P1.position.x + P1.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P1.position.y - P1.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P1.position.y + P1.size / 2 && !P1.deadState && !P1.invincibleState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
-            P1.deadState = true;
+            P1.deadState = true; //make P1 dead
+            P1.deathTimer = 600; //reset P1 death timer to max
             println("hit player 1");
 
             //check if the bullet is within P2's hitbox and if P2 is not dead
           } else if (projectiles.get(i).position.x + projectiles.get(i).size / 2 > P2.position.x - P2.size / 2 && projectiles.get(i).position.x - projectiles.get(i).size / 2 < P2.position.x + P2.size / 2 && projectiles.get(i).position.y + projectiles.get(i).size / 2 > P2.position.y - P2.size / 2 && projectiles.get(i).position.y - projectiles.get(i).size / 2 < P2.position.y + P2.size / 2 && !P2.deadState && !P2.invincibleState) {
             projectiles.remove(i); //remove the projectile
             lives -= 1; //decrease the amount of lives
-            P2.deadState = true;
+            P2.deadState = true; //make P2 dead
+            P2.deathTimer = 600; //reset P1 death timer to max
             println("hit player 2");
           }
         }
@@ -135,15 +142,15 @@ void revive() {
     if (P1.deadState) {
       //if P2's hitbox is within P2's hitbox
       if (P2.position.x - P2.size > P1.position.x - 100 && P2.position.x + P2.size < P1.position.x + 100 && P2.position.y - P2.size > P1.position.y - 100 && P2.position.y + P2.size < P1.position.y + 100) {
-        //build revival progress for P1
-        P1.revivalProgress += 1;
+        P1.revivalProgress += 1; //build revival progress for P1
+        P1.deathTimer += 1; //increase P1's death timer by 1, freezing it in place
       }
       //if P2 is dead
     } else if (P2.deadState) {
       //if P1's hitbox is within P2's hitbox
       if (P1.position.x - P1.size > P2.position.x - 100 && P1.position.x + P1.size < P2.position.x + 100 && P1.position.y - P1.size > P2.position.y - 100 && P1.position.y + P1.size < P2.position.y + 100) {
-        //build revival progress for P2
-        P2.revivalProgress += 1;
+        P2.revivalProgress += 1; //build revival progress for P2
+        P2.deathTimer += 1; //increase P2's death timer by 1, freezing it in place
       }
     }
   }

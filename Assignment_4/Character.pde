@@ -1,5 +1,7 @@
 class Character {
-
+  
+  Attacks attackCore; //variable that will allow attacks to be executed
+  
   PImage straightSprite[] = new PImage[3]; //PImage array for the character animation
   int frame; //variable for the frame of animation
 
@@ -17,6 +19,7 @@ class Character {
 
   boolean deadState; //variable for determining whether character is dead
   int revivalProgress; //variable for the progress of revival when dead
+  int deathTimer; //variable for the amount of time left to be revived before losing another life
   
   boolean invincibleState; //variable for determining whether character is invincible and cannot be damaged
   int invincibilityTimer; //variable for the duration of invincibility;
@@ -31,11 +34,15 @@ class Character {
     velocity = new PVector(10, 10);
     //set the speed multiplier to 1, not affecting velocity at all
     speedMult = 1;
-
+    
+    //set up attacks for bombs, passing character's position into the Attack object
+    attackCore = new Attacks(position);
+    
     //character starts out alive when initialized
     deadState = false;
     revivalProgress = 0;
-
+    deathTimer = 600; //death timer set to max time (10 seconds)
+    
     //for loop that will load all frames of character sprite into array
     for (int i = 0; i < straightSprite.length; i++) {
       straightSprite[i] = loadImage(name + "_straight" + (i + 1) + ".png");
@@ -87,11 +94,13 @@ class Character {
       stroke(0); //reset stroke back to 0 so it doesn't affect other shapes drawn
     }
     
-    //if character is dead, draw the revival bar
+    //if character is dead, draw the revival bar and death timer bar
     if (deadState) {
       //draw the red revival bar
       fill(255, 0, 0, 100);
       rect(position.x, position.y, 100, 100);
+      //draw the red death timer bar, whose height is determined by deathTimer
+      rect(position.x + 65, position.y, 10, map(deathTimer, 0, 600, 0, 100));
       //draw the green revival bar, whose width is determined by revivalProgress
       fill(0, 255, 0, 100);
       rect(position.x, position.y, map(revivalProgress, 0, 300, 0, 100), 100);
@@ -127,8 +136,20 @@ class Character {
 
   //function that updates the character such as command inputs, revival and invincibility
   void update() {
+    //if character isn't dead, accept command input
     if (!deadState) {
       input();
+    
+    } else if (lives > 0) { //if character is dead
+      //count down death timer by one every frame
+      deathTimer -= 1;
+      
+      //when deathTimer reaches 0 and there is at least 1 life remaining
+      if (deathTimer <= 0) {
+        lives -= 1; //lose a life
+        deathTimer = 600; //reset death timer
+        revivalProgress = 0; //reset revival progress
+      }
     }
     
     //when character has been revived for 5 seconds
