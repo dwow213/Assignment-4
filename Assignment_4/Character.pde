@@ -86,6 +86,15 @@ class Character {
       frame = (frame + 1) % straightSprite.length;
     }
     
+    if (ammo < maxAmmo) {
+      if (!shootingExhaustion) {
+        fill(0, 255, 0, 100);
+      } else {
+        fill(0, 65, 0, 100);
+      }
+      rect(position.x - 65, position.y, 10, map(ammo, 0, maxAmmo, 0, 100));
+    }
+    
     //if character is invincible, indicate they're invincible by drawing a green outline around them
     if (invincibleState) {
       fill(0, 0, 0, 0);
@@ -104,6 +113,7 @@ class Character {
       //draw the green revival bar, whose width is determined by revivalProgress
       fill(0, 255, 0, 100);
       rect(position.x, position.y, map(revivalProgress, 0, 300, 0, 100), 100);
+      fill(0); //reset fill back to 0
     }
     
     //draw the character's sprite on screen with rotation in mind
@@ -236,6 +246,8 @@ class Character {
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(0, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       projectiles.add(new Projectile("friendly", position.copy(), new PVector(-5, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
+      projectiles.add(new Projectile("friendly", position.copy(), new PVector(-15, -20), new PVector(0, 0), 1, 6, color(0, 255, 0)));
       ammo -= 1; //decrease ammo
 
       if (ammo < 1) {

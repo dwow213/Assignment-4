@@ -48,6 +48,7 @@ void draw() {
   
   //display the amount of lives left at the top left corner of the screen
   textSize(50);
+  fill(185);
   text("Lives: " + lives, 25, 60);
   
   //display and update the player characters
@@ -109,7 +110,8 @@ void draw() {
       enemies.remove(a);
     }
   }
-
+  
+  //revive characters if needed
   revive();
 }
 
@@ -140,14 +142,14 @@ void revive() {
   if (lives > 0) {
     //if P1 is dead
     if (P1.deadState) {
-      //if P2's hitbox is within P2's hitbox
-      if (P2.position.x - P2.size > P1.position.x - 100 && P2.position.x + P2.size < P1.position.x + 100 && P2.position.y - P2.size > P1.position.y - 100 && P2.position.y + P2.size < P1.position.y + 100) {
+      //if P2's hitbox is within P2's revive hitbox
+      if (P2.position.x - P2.size / 2 > P1.position.x - 100 && P2.position.x + P2.size / 2 < P1.position.x + 100 && P2.position.y - P2.size / 2 > P1.position.y - 100 && P2.position.y + P2.size / 2 < P1.position.y + 100) {
         P1.revivalProgress += 1; //build revival progress for P1
         P1.deathTimer += 1; //increase P1's death timer by 1, freezing it in place
       }
       //if P2 is dead
     } else if (P2.deadState) {
-      //if P1's hitbox is within P2's hitbox
+      //if P1's hitbox is within P2's revive hitbox
       if (P1.position.x - P1.size > P2.position.x - 100 && P1.position.x + P1.size < P2.position.x + 100 && P1.position.y - P1.size > P2.position.y - 100 && P1.position.y + P1.size < P2.position.y + 100) {
         P2.revivalProgress += 1; //build revival progress for P2
         P2.deathTimer += 1; //increase P2's death timer by 1, freezing it in place

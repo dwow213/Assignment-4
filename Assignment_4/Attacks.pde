@@ -6,31 +6,50 @@ class Attacks {
   //a variable that count up every frame, determining whether certain actions should performed based on time
   int timer;
 
-  //a variable used for the direction enemy or character will move
-  int direction;
-
-  //constructor is empty
+  //constructor
   Attacks (PVector tempPos) {
     originPosition = tempPos;
     timer = 0;
-    direction = 1;
   }
 
   //waste's first phase attack
-  void dustSpecks() {
+  void trashAttack() {
     //in all attack functions, the timer increments by one every time their functions are called (ideally every frame)
     timer += 1;
 
-    //on every frame -
-    if (timer % 1 == 0) {
-      //shoot grey enemy projectiles from attacker's position, going upwards at first before going downwards, and with a random x velocity and x acceleration
-      for (int i = 0; i < 5; i++) {
-        projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(int(random(-50, 50)), -1), new PVector(random(-0.5, 0.5), 0.5), 20, 20, color(170)));
-      }
+    //every 60 frames (1 second), shoot a single bullet
+    if (timer % 60 == 0) {
+      projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(0, 10), new PVector(0, 0), 20, 20, color(170)));
     }
   }
 
   //waste's second phase attack
+  void discardedMound() {
+    timer += 1;
+
+    //after 60 frames (1 second) -
+    if (timer == 60) {
+      //shoot white enemy projectiles that are slow at first, but quickly accelerates downwards after 120 frames (2 seconds)
+      for (int i = 0; i < 25; i++) {
+        projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(random(-20, 20), 1), new PVector(0, 30), 120, 20, color(225)));
+      }
+    }
+
+    //every 30 frames -
+    if (timer % 30 == 0) {
+      //shoot grey enemy projectiles that are slow and eventually accelerate upwards
+      for (int i = 0; i < 6; i++) {
+        projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(random(-5, 5), 4), new PVector(0, -0.1), 10, 20, color(170)));
+      }
+    }
+
+    //after 120 frames (2 seconds)
+    if (timer == 120) {
+      timer = 0; //reset the time
+    }
+  }
+
+  //waste's third phase attack
   void garbageDisposal() {
     timer += 1;
 
@@ -51,8 +70,8 @@ class Attacks {
       timer = 0;
     }
   }
-
-  //attack used by garbage can fodder enemies during waste's second phase attack
+  
+  //attack used by garbage can fodder enemies during waste's third phase attack
   void garbageCan() {
     timer += 1;
 
@@ -69,11 +88,11 @@ class Attacks {
     }
   }
   
-  //waste's third phase attack
+  //waste's fourth phase attack
   void scatteredLitter() {
     timer += 1;
 
-    //every 20 frames - 
+    //every 20 frames -
     if (timer % 20 == 0) {
       //shoot grey enemy projectiles from the sides of the screen, moving in a straight line
       for (int i = 0; i < 1; i++) {
@@ -84,10 +103,31 @@ class Attacks {
       }
     }
   }
+  
+  //waste's fifth phase attack
+  void dustSpecks() {
+    //in all attack functions, the timer increments by one every time their functions are called (ideally every frame)
+    timer += 1;
+
+    //on every frame -
+    if (timer % 1 == 0) {
+      //shoot grey enemy projectiles from attacker's position, going upwards at first before going downwards, and with a random x velocity and x acceleration
+      for (int i = 0; i < 5; i++) {
+        projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(int(random(-50, 50)), -1), new PVector(random(-0.5, 0.5), 0.5), 20, 20, color(170)));
+      }
+    }
+  }
+
+
+
+
+
+
+
+
 
   //reset the timer (used when new attacks appear)
   void reset() {
     timer = 0;
-    direction = 1;
   }
 }

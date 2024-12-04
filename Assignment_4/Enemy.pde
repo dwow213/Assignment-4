@@ -1,23 +1,23 @@
 class Enemy {
 
-  
+
   Attacks attackCore; //variable that will allow attacks to be executed
-  
+
   PImage straightSprite[] = new PImage[4];//PImage array for the character animation
   int frame;//variable for the frame of animation
-  
+
   //variables for projectile position, velocity and acceleration
   PVector position;
   PVector velocity;
   PVector acceleration;
-  
+
   int size; //variable for the hitbox size of enemy
   String name; //variable for the name of enemy
   boolean bossEnemy; //boolean variable for whether enemy object is a boss enemy or not
-  
+
   int health; //variable for the health of enemy
   int maxHealth; //variable for the max health of enemy
-  
+
   //array list that will hold the attacks of the enemy
   ArrayList<String> attacks = new ArrayList<String>();
 
@@ -25,7 +25,7 @@ class Enemy {
   Enemy (String tempName, PVector tempPosition, boolean tempBossEnemy) {
     //set name to the parameter accepted
     name = tempName;
-    
+
     //determine if enemy is fodder or a boss based on accepted parameter
     bossEnemy = tempBossEnemy;
 
@@ -45,9 +45,14 @@ class Enemy {
       maxHealth = 800;
 
       //add attacks
-      attacks.add("dustSpecks");
+      attacks.add("trashAttack");
+      attacks.add("discardedMound");
       attacks.add("garbageDisposal");
       attacks.add("scatteredLitter");
+      attacks.add("dustSpecks");
+      
+      
+      
 
       //if enemy is fodder used for waste's second attack
     } else if (name == "garbageCan") {
@@ -96,7 +101,7 @@ class Enemy {
             projectiles.remove(i);
           }
         }
-        
+
         //remove all fodder enemies
         for (int i = 0; i < enemies.size(); i++) {
           if (!enemies.get(i).bossEnemy) {
@@ -128,6 +133,10 @@ class Enemy {
 
   //function that executes the attacks the enemy may have
   void executeAttacks() {
+    if (attacks.get(0) == "trashAttack") {
+      attackCore.trashAttack();
+    }
+
     if (attacks.get(0) == "dustSpecks") {
       attackCore.dustSpecks();
     }
@@ -139,9 +148,13 @@ class Enemy {
     if (attacks.get(0) == "garbageCan") {
       attackCore.garbageCan();
     }
-    
+
     if (attacks.get(0) == "scatteredLitter") {
       attackCore.scatteredLitter();
+    }
+    
+    if (attacks.get(0) == "discardedMound") {
+      attackCore.discardedMound();
     }
   }
 }
