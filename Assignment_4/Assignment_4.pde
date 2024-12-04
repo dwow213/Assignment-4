@@ -1,6 +1,6 @@
-//Assignment 4
-//Assignment 4
-//Assignment 4
+//Assignment 4 - Untitled Bullet-Hell Game
+//By Judah Leal
+//Instructions in game
 
 //boolean variable that determines whether the game is being played
 boolean playingGame = false;

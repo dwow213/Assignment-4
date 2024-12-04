@@ -58,7 +58,7 @@ class Attacks {
       enemies.add(new Enemy("garbageCan", new PVector(180, -200), false));
     }
 
-    //every 30 frames, shoot 10 grey enemy projectiles from attacker's position, with a random x acceleration
+    //every 20 frames, shoot 10 grey enemy projectiles from attacker's position, with a random x acceleration
     if (timer % 20 == 0) {
       for (int i = -10; i <= 10; i += 5) {
         projectiles.add(new Projectile("hostile", originPosition.copy(), new PVector(i, 1), new PVector(random(-0.5, 0.5), 0), 20, 20, color(170)));
