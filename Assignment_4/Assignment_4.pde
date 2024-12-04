@@ -50,7 +50,7 @@ void setup() {
   //set resolution and frame rate
   size(1280, 1024);
   frameRate(60);
-  
+
   //load menu images
   mainMenu = loadImage("main menu.png");
   gameOverMenu = loadImage("game over.png");
@@ -61,17 +61,17 @@ void draw() {
   background(100);
   //when the game is not being played and we are in the menu
   imageMode(CORNER);
-  
+
   //if we are on menus (the game is not being played)
   if (!playingGame) {
 
     //displaying menus
     //on the main menu
     if (menu == 1) {
-      
+
       //display the main menu
       image(mainMenu, 0, 0);
-      
+
       //when any key is pressed
       if (key == 'Z' || key == 'z') {
         playingGame = true; //change game state to now playing the game
@@ -82,24 +82,24 @@ void draw() {
     } else if (menu == 2) {
 
       image(gameWinMenu, 0, 0);
-      
+
       //when any key is pressed
       if (key == ' ') {
         menu = 1; //change menu to main menu
       }
-      
+
       //on the game over menu
     } else if (menu == 3) {
-      
+
       image(gameOverMenu, 0, 0);
-      
+
       //when any key is pressed
       if (key == ' ') {
         menu = 1; //change menu to main menu
       }
     }
 
-  //when the game is being played
+    //when the game is being played
   } else {
 
     //if there are no more lives remaining and both P1 and P2 are dead
@@ -107,6 +107,13 @@ void draw() {
       //the game is over and you lose
       playingGame = false;
       menu = 3; //game over menu
+    }
+
+    //if all enemies are dead
+    if (enemies.size() <= 0) {
+      //the game is over and you win!!!
+      playingGame = false;
+      menu = 2; //game win menu
     }
 
     //display the amount of lives left at the top left corner of the screen
@@ -125,12 +132,7 @@ void draw() {
       enemies.get(a).display();
       enemies.get(a).update();
 
-      //if all enemies are dead
-      if (enemies.size() <= 0) {
-        //the game is over and you win!!!
-        playingGame = false;
-        menu = 3; //game win menu
-      }
+
 
       //for loop that handles the projectiles
       for (int i = 0; i < projectiles.size(); i++) {
@@ -188,19 +190,16 @@ void draw() {
 
 //function that sets up the game and makes it ready for play
 void reset() {
-  //initialize projectiles and enemies 
+  //initialize projectiles and enemies
   projectiles = new ArrayList<Projectile>();
   enemies = new ArrayList<Enemy>();
-  
+
   //set lives to 5, allowing for 5 deaths
   lives = 1;
   //instantiate characters and boss
   P1 = new Character("gen", 1);
   P2 = new Character("blu", 2);
   enemies.add(new Enemy("waste", null, true));
-  
-  
-
 }
 
 //function for the reviving of players
