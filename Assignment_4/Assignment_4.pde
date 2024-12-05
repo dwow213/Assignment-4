@@ -197,7 +197,7 @@ void reset() {
   enemies = new ArrayList<Enemy>();
 
   //set lives to 5, allowing for 5 deaths
-  lives = 1;
+  lives = 5;
   //instantiate characters and boss
   P1 = new Character("gen", 1);
   P2 = new Character("blu", 2);
